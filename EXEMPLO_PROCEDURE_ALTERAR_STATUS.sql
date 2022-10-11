@@ -11,7 +11,7 @@ create or replace procedure EXEMPLO_PROCEDURE_ALTERAR_STATUS(
 begin
 
   if iNOVO_STATUS not in ('ABERTO', 'FATURANDO', 'FINALIZADO', 'CANCELADO') then
-    GERAR_ERRO('O valor do parâmetro "iNOVO_STATUS" é inválido. Status: ' || iNOVO_STATUS || '.');
+    Raise_Application_Error(-20999,'O valor do parâmetro "iNOVO_STATUS" é inválido. Status: ' || iNOVO_STATUS || '.');
   end if;
 
   begin
@@ -24,11 +24,11 @@ begin
     where PEDIDO_ID = iPEDIDO_ID;
   exception
     when others then
-      GERAR_ERRO('Pedido não encontrado! Pedido: ' || iPEDIDO_ID || '.');
+      Raise_Application_Error(-20999, 'Pedido não encontrado! Pedido: ' || iPEDIDO_ID || '.');
   end;
 
   if iNOVO_STATUS = x_status_atual then
-    GERAR_ERRO('Pedido já está neste status!');
+    Raise_Application_Error(-20999, 'Pedido já está neste status!');
   end if;
 
   if iNOVO_STATUS = 'ABERTO' then
